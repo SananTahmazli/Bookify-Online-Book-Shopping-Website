@@ -1,0 +1,95 @@
+﻿@using Helper;
+@using System.Globalization;
+@using Helper.RoleKeywordsHelper;
+@using Service.Abstracts;
+@inject ICartService CartService
+
+@{
+    var isAuth = Context.User.Identity.IsAuthenticated;
+    var isAdmin = Context.User.IsInRole(RoleKeywords.AdminRole);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Bookify" />
+        <meta name="keywords" content="Bookify" />
+        <meta name="author" content="Sanan Tahmazli" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="~/twitter-bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/twitter-bootstrap/css/bootstrap-grid.css" />
+        <link rel="stylesheet" href="~/twitter-bootstrap/css/bootstrap-reboot.css" />
+        <link rel="stylesheet" href="~/twitter-bootstrap/css/bootstrap-utilities.css" />
+        <title>@ViewData["Title"] - Bookify</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Bookify</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="display:@((isAdmin)? "none" :"block")" class="nav-link active" asp-controller="Book" asp-action="GetAll">Our Books</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a style="display:@((isAdmin)? "none" : "block")" 
+                                class="nav-link active" asp-controller="Profile" asp-action="Get"
+                                    asp-route-id="@Convert.ToInt32(Context?.User?.FindFirst(x=>x.Type=="Id")?.Value)">
+                                @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Context?.User?.FindFirst(x=>x.Type=="Username")?.Value ?? "").ToLower()
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="display:@((isAdmin)? "block" : "none")" class="btn btn-outline-warning"
+                                asp-controller="Admin" asp-action="GetAll">Admin</a>
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            @if(isAuth)
+                            {
+                                if (!isAdmin)
+                                {
+                                    <a class="btn btn-outline-warning" asp-controller="Cart"
+                                        asp-action="GetCart">
+                                            My Cart (@CartService.GetCountOfBooksInMyCart(Convert.ToInt32(Context?.User?.FindFirst(x=>x.Type=="Id")?.Value)))
+                                    </a>
+                                }
+                            }
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            <a style="display:@((isAuth)? "block" : "none")" class="btn btn-outline-danger"
+                                asp-controller="Login" asp-action="SignOut">Sign Out</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="display:@((isAuth)? "none" : "block")" class="btn btn-outline-primary" 
+                                asp-controller="Login" asp-action="SignIn">Sign In</a>
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            <a style="display:@((isAuth)? "none" : "block")" class="btn btn-outline-primary" 
+                                asp-controller="Login" asp-action="SignUp">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <br />
+            @RenderBody()
+        </div>
+
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

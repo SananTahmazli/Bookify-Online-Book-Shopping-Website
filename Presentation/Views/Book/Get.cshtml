@@ -1,0 +1,52 @@
+﻿@using DTO;
+@using DTO.Book;
+@model BookDTO
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+@{
+    if (Model != null)
+    {
+        <div class="row justify-content-center">
+            <partial name="~/Views/Shared/Messages.cshtml" />
+
+            <div class="col-4 mx-3 my-3">
+                <img class="card-size-250" src=@Url.Content(@Model.CoverPhotoPath) width="320" height="320"
+                 title="@Model.Name">
+            </div>
+
+            <div class="col-4 mx-3 my-5">
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h3 class="card-title">Name: @Model.Name</h3>
+                        <hr>
+                        <p class="card-text">
+                            <strong>Published Year:</strong> @Model.PublishedYear
+                            <br>
+                            <strong>Price:</strong> $@Model.Price
+                        </p>
+                        <hr>
+                        <form method="post" asp-controller="Cart" asp-action="AddToCart">
+                            <div class="form-outline mb-4">
+                                <input type="hidden" name="BookId" value="@Model.Id" class="form-control form-control" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label for="Count">Count:</label>
+                                <input type="number" id="Count" style="width:100px" value="1" name="Count" min="1" max="10" class="form-control form-control" />
+                            </div>
+
+                            <a class="btn btn-outline-dark" asp-controller="Book" asp-action="GetAll">Back</a>
+
+                            &nbsp;
+
+                            <input type="submit" class="btn btn-outline-warning" value="Add to Cart">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

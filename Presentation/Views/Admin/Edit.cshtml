@@ -1,0 +1,72 @@
+﻿@using DTO;
+@using DTO.Book;
+@model BookDTO
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h3>Edit Book</h3>
+<hr />
+<br />
+
+<partial name="~/Views/Shared/Messages.cshtml" />
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-floating mb-3">
+        <input type="hidden" class="form-control" id="Id" value="@Model.Id" asp-for="Id" placeholder="name@example.com" required />
+        <label for="Id">ID</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="Name" value="@Model.Name" asp-for="Name" placeholder="name@example.com" required />
+        <label for="Name">Name</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <select asp-for="PublishedYear" id="PublishedYear" placeholder="name@example.com" 
+            class="form-select" aria-label="Default select example">
+            <option selected>---</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+        </select>
+        <label for="PublishedYear">Published year</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="number" min="5" max="100" step="0.01" class="form-control" 
+            value="@Model.Price" id="Price" asp-for="Price" 
+            placeholder="name@example.com" required />
+        <label for="Price">Price</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input value="@Model.CoverPhoto" asp-for="CoverPhoto" 
+                    class="form-control custom-file-input" />
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
+            });
+        </script>
+    }
+
+    <a class="btn btn-outline-dark" asp-controller="Admin" asp-action="GetAll">Back</a>
+
+    &nbsp;
+
+    <input type="submit" class="btn btn-outline-success" 
+        asp-controller="Admin" asp-action="EditDTO" value="Save" />
+</form>

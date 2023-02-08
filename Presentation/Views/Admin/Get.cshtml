@@ -1,0 +1,25 @@
+﻿@using DTO;
+@using DTO.Book;
+@model BookDTO
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="card" style="width: 18rem;">
+    <img src=@Url.Content(Model.CoverPhotoPath) class="card-img-top" 
+        alt="@Model.Name" title="@Model.Name">
+    <div class="card-body">
+        <h3>Name: @Model.Name</h3>
+        <hr />
+        <p class="card-text">
+            <strong>Published year:</strong> @Model.PublishedYear
+            <br />
+            <strong>Price:</strong> $@Model.Price
+        </p>
+    </div>
+</div>
+<br />
+<a class="btn btn-outline-dark" asp-controller="Admin" asp-action="GetAll">Back</a>
+<br />
+<br />

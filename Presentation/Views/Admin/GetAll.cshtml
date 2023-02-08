@@ -1,0 +1,51 @@
+﻿@using DTO;
+@using DTO.Book;
+@model IEnumerable<BookDTO>
+
+@{
+    ViewData["Title"] = "Our Books";
+}
+
+<h3>Our Books</h3>
+<hr />
+<br />
+
+<a class="btn btn-outline-primary" asp-controller="Admin" asp-action="Add">New</a>
+<br />
+
+<div class="row">
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Published year</th>
+                <th>Price ($)</th>
+                <th>Cover photo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Name</td>
+                    <td>@book.PublishedYear</td>
+                    <td>@book.Price</td>
+                    <td>
+                        <img src=@Url.Content(book.CoverPhotoPath) title="@book.Name" width="50" height="50">
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-success" asp-controller="Admin" 
+                            asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+                        &nbsp;
+                        <a class="btn btn-outline-danger" asp-controller="Admin"
+                            asp-action="Remove" asp-route-id="@book.Id">Remove</a>
+                        &nbsp;
+                        <a class="btn btn-outline-info" asp-controller="Admin"
+                            asp-action="Get" asp-route-id="@book.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

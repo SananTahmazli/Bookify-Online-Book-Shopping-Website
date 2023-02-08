@@ -1,0 +1,30 @@
+﻿@using System.Globalization;
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h3>
+    My Profile
+</h3>
+<hr />
+<br />
+
+<div class="card text-bg-light mb-3" style="width: 100%;">
+    <div class="card-body">
+        <ul typeof="circle">
+            <li>
+                <strong>Full name:</strong> @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Context?.User?.FindFirst(x=>x.Type=="FullName")?.Value ?? "")
+            </li>
+            <li>
+                <strong>Username:</strong> @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Context?.User?.FindFirst(x=>x.Type=="Username")?.Value ?? "").ToLower()
+            </li>
+            <li>
+                <strong>Email:</strong> @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Context?.User?.FindFirst(x=>x.Type=="Email")?.Value ?? "").ToLower()
+            </li>
+            <li>
+                <strong>Birth date:</strong> @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Context?.User?.FindFirst(x=>x.Type=="BirthDate")?.Value ?? "")
+            </li>
+        </ul>
+    </div>
+</div>
